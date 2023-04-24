@@ -1,3 +1,4 @@
+const Repair = require("../models/repair.model");
 const User = require("../models/user.model");
 const catchAsync = require("../utils/catchAsync");
 
@@ -7,6 +8,15 @@ exports.findAll = async (req, res) => {
     where: {
       status: "available",
     },
+    attributes: { exclude: ["createdAt", "updatedAt", "password"] },
+    include: [
+      {
+        model: Repair,
+        attributes: {
+          exclude: ["userId", "createdAt", "updatedAt"],
+        },
+      },
+    ],
   });
 
   res.status(200).json({
